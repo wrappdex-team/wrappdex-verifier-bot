@@ -155,10 +155,10 @@ async function registerCommands(): Promise<void> {
   const rest = new REST({ version: '10' }).setToken(config.DISCORD_BOT_TOKEN);
 
   // 1. Borramos TODOS los comandos antiguos primero (limpieza)
- await rest.put(
-  Routes.applicationCommands(config.DISCORD_CLIENT_ID),
-  { body: [] }
-);
+  await rest.put(
+    Routes.applicationCommands(config.DISCORD_CLIENT_ID),
+    { body: [] }
+  );
   console.log('🧹 Old commands cleared');
 
   // 2. Definimos los comandos nuevos
@@ -234,11 +234,12 @@ async function registerCommands(): Promise<void> {
   ];
 
   // 3. Registramos los comandos nuevos
- await rest.put(
-  Routes.applicationCommands(config.DISCORD_CLIENT_ID),
-  { body: commands },
-);
-  }
+  await rest.put(
+    Routes.applicationCommands(config.DISCORD_CLIENT_ID),
+    { body: commands },
+  );
+  console.log('✅ Guild slash commands registered cleanly');
+}
 
 async function handleVerify(interaction: ChatInputCommandInteraction): Promise<void> {
   await interaction.deferReply({ ephemeral: true });
