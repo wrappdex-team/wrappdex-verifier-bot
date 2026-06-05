@@ -238,6 +238,7 @@ async function registerCommands(): Promise<void> {
   Routes.applicationCommands(config.DISCORD_CLIENT_ID),
   { body: commands },
 );
+  }
 
 async function handleVerify(interaction: ChatInputCommandInteraction): Promise<void> {
   await interaction.deferReply({ ephemeral: true });
