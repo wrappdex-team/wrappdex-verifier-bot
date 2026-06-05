@@ -13,7 +13,7 @@ export const config = {
   DISCORD_VIP_DAO_ROLE_ID: '1424153762112602253',
 
   HEDERA_MIRROR_BASE_URL: 'https://mainnet-public.mirrornode.hedera.com',
-  HEDERA_BOT_ACCOUNT_ID: process.env.HEDERA_BOT_ACCOUNT_ID || "",
+  HEDERA_BOT_ACCOUNT_ID: required('HEDERA_BOT_ACCOUNT_ID'),
 
   H_TOKEN_ID: '0.0.9356476',
   H_TOKEN_DECIMALS: 8,
