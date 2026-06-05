@@ -165,7 +165,7 @@ async function registerCommands(): Promise<void> {
   const commands = [
     new SlashCommandBuilder()
       .setName('verify')
-      .setDescription('Link a Hedera wallet — proves ownership via a small HBAR transfer with a unique memo')
+      .setDescription('Link a Hedera wallet — proves ownership via a small HBAR transfer with a unique memo (new)')
       .addStringOption(option =>
         option
           .setName('wallet')
@@ -175,15 +175,15 @@ async function registerCommands(): Promise<void> {
       .toJSON(),
     new SlashCommandBuilder()
       .setName('confirm')
-      .setDescription('Confirm wallet ownership after sending the HBAR transfer with the unique memo')
+      .setDescription('Confirm wallet ownership after sending the HBAR transfer with the unique memo (new)')
       .toJSON(),
     new SlashCommandBuilder()
       .setName('wallets')
-      .setDescription('Show all Hedera wallets linked to your Discord account')
+      .setDescription('Show all Hedera wallets linked to your Discord account (new)')
       .toJSON(),
     new SlashCommandBuilder()
       .setName('unlink')
-      .setDescription('Remove a Hedera wallet from your Discord account')
+      .setDescription('Remove a Hedera wallet from your Discord account (new)')
       .addStringOption(option =>
         option
           .setName('wallet')
@@ -193,7 +193,7 @@ async function registerCommands(): Promise<void> {
       .toJSON(),
     new SlashCommandBuilder()
       .setName('rule')
-      .setDescription('(Admin/Mod) Manage custom token/NFT role assignment rules')
+      .setDescription('(Admin/Mod) Manage custom token/NFT role assignment rules (new)')
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
       .addSubcommand(sub =>
         sub
@@ -222,7 +222,7 @@ async function registerCommands(): Promise<void> {
       .addSubcommand(sub =>
         sub
           .setName('remove')
-          .setDescription('Delete a rule by its ID')
+          .setDescription('Delete a rule by its ID (new)')
           .addStringOption(o =>
             o.setName('id').setDescription('Rule ID (get it from /rule list)').setRequired(true),
           ),
