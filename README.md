@@ -201,3 +201,4 @@ Requires Node.js 20+ and pnpm.
 - **Guild commands** — registered as server-specific (not global) for instant propagation
 - **Roles added AND removed** — the sync loop actively revokes roles when holdings drop, not just grants them
 - **Custom rules are first-class** — the `/rule` engine extends the same evaluation and sync pipeline as the built-in rules
+Deployment actualizado - 5 junio 2026
