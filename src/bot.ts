@@ -154,6 +154,14 @@ async function syncAllRoles(): Promise<void> {
 async function registerCommands(): Promise<void> {
   const rest = new REST({ version: '10' }).setToken(config.DISCORD_BOT_TOKEN);
 
+  // 1. Borramos TODOS los comandos antiguos primero (limpieza)
+  await rest.put(
+    Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, config.DISCORD_GUILD_ID),
+    { body: [] }
+  );
+  console.log('🧹 Old commands cleared');
+
+  // 2. Definimos los comandos nuevos
   const commands = [
     new SlashCommandBuilder()
       .setName('verify')
@@ -165,17 +173,14 @@ async function registerCommands(): Promise<void> {
           .setRequired(true),
       )
       .toJSON(),
-
     new SlashCommandBuilder()
       .setName('confirm')
       .setDescription('Confirm wallet ownership after sending the HBAR transfer with the unique memo')
       .toJSON(),
-
     new SlashCommandBuilder()
       .setName('wallets')
       .setDescription('Show all Hedera wallets linked to your Discord account')
       .toJSON(),
-
     new SlashCommandBuilder()
       .setName('unlink')
       .setDescription('Remove a Hedera wallet from your Discord account')
@@ -186,7 +191,6 @@ async function registerCommands(): Promise<void> {
           .setRequired(true),
       )
       .toJSON(),
-
     new SlashCommandBuilder()
       .setName('rule')
       .setDescription('(Admin/Mod) Manage custom token/NFT role assignment rules')
@@ -229,23 +233,12 @@ async function registerCommands(): Promise<void> {
       .toJSON(),
   ];
 
-  try {
-    await rest.put(
-      Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, config.DISCORD_GUILD_ID),
-      { body: commands },
-    );
-    console.log('✅ Guild slash commands registered (/verify, /confirm, /wallets, /unlink, /rule)');
-  } catch (err: unknown) {
-    const e = err as { code?: number; status?: number };
-    if (e.code === 50001 || e.status === 403) {
-      console.error(
-        '❌ Cannot register slash commands — Missing Access (50001).\n' +
-        `   https://discord.com/oauth2/authorize?client_id=${config.DISCORD_CLIENT_ID}&scope=bot+applications.commands&permissions=268435456`,
-      );
-    } else {
-      throw err;
-    }
-  }
+  // 3. Registramos los comandos nuevos
+  await rest.put(
+    Routes.applicationGuildCommands(config.DISCORD_CLIENT_ID, config.DISCORD_GUILD_ID),
+    { body: commands },
+  );
+  console.log('✅ Guild slash commands registered cleanly');
 }
 
 async function handleVerify(interaction: ChatInputCommandInteraction): Promise<void> {
