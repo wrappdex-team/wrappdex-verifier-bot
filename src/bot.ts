@@ -154,18 +154,22 @@ async function syncAllRoles(): Promise<void> {
 async function registerCommands(): Promise<void> {
   const rest = new REST({ version: '10' }).setToken(config.DISCORD_BOT_TOKEN);
 
-  // 1. Borramos TODOS los comandos antiguos primero (limpieza)
+  // 1. Borramos TODOS los comandos antiguos
   await rest.put(
     Routes.applicationCommands(config.DISCORD_CLIENT_ID),
     { body: [] }
   );
   console.log('🧹 Old commands cleared');
 
-  // 2. Definimos los comandos nuevos
+  // 2. Esperamos 3 segundos
+  await new Promise(resolve => setTimeout(resolve, 3000));
+  console.log('⏳ Waiting 3 seconds before re-registering...');
+
+  // 3. Definimos los comandos nuevos
   const commands = [
     new SlashCommandBuilder()
       .setName('verify')
-      .setDescription('Link a Hedera wallet — proves ownership via a small HBAR transfer with a unique memo (new)')
+      .setDescription('Link a Hedera wallet — proves ownership via a small HBAR transfer with a unique memo')
       .addStringOption(option =>
         option
           .setName('wallet')
@@ -175,15 +179,15 @@ async function registerCommands(): Promise<void> {
       .toJSON(),
     new SlashCommandBuilder()
       .setName('confirm')
-      .setDescription('Confirm wallet ownership after sending the HBAR transfer with the unique memo (new)')
+      .setDescription('Confirm wallet ownership after sending the HBAR transfer with the unique memo')
       .toJSON(),
     new SlashCommandBuilder()
       .setName('wallets')
-      .setDescription('Show all Hedera wallets linked to your Discord account (new)')
+      .setDescription('Show all Hedera wallets linked to your Discord account')
       .toJSON(),
     new SlashCommandBuilder()
       .setName('unlink')
-      .setDescription('Remove a Hedera wallet from your Discord account (new)')
+      .setDescription('Remove a Hedera wallet from your Discord account')
       .addStringOption(option =>
         option
           .setName('wallet')
@@ -193,7 +197,7 @@ async function registerCommands(): Promise<void> {
       .toJSON(),
     new SlashCommandBuilder()
       .setName('rule')
-      .setDescription('(Admin/Mod) Manage custom token/NFT role assignment rules (new)')
+      .setDescription('(Admin/Mod) Manage custom token/NFT role assignment rules')
       .setDefaultMemberPermissions(PermissionFlagsBits.ManageRoles)
       .addSubcommand(sub =>
         sub
@@ -222,7 +226,7 @@ async function registerCommands(): Promise<void> {
       .addSubcommand(sub =>
         sub
           .setName('remove')
-          .setDescription('Delete a rule by its ID (new)')
+          .setDescription('Delete a rule by its ID')
           .addStringOption(o =>
             o.setName('id').setDescription('Rule ID (get it from /rule list)').setRequired(true),
           ),
@@ -233,7 +237,7 @@ async function registerCommands(): Promise<void> {
       .toJSON(),
   ];
 
-  // 3. Registramos los comandos nuevos
+  // 4. Registramos los comandos nuevos
   await rest.put(
     Routes.applicationCommands(config.DISCORD_CLIENT_ID),
     { body: commands },
